@@ -37,3 +37,9 @@ The gem is available as open source under the terms of the [MIT License](https:/
 ## Code of Conduct
 
 Everyone interacting in the HexletCode project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/hexlet_code/blob/master/CODE_OF_CONDUCT.md).
+
+# My Project
+
+[![CI](https://github.com/DiMM2021/rails-project-63/actions/workflows/CI.yml/badge.svg)](https://github.com/DiMM2021/rails-project-63/actions/workflows/CI.yml)
+
+[![Hexlet Check](https://github.com/DiMM2021/rails-project-63/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/DiMM2021/rails-project-63/actions/workflows/hexlet-check.yml)
