@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = "Form generator, a simplified analogue of Simple Form."
   spec.homepage = "https://github.com/DiMM2021/rails-project-63"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 3.2.2"
+  spec.required_ruby_version = ">= 3.0.0"
 
   spec.metadata["allowed_push_host"] = ""
 

@@ -41,5 +41,4 @@ Everyone interacting in the HexletCode project's codebases, issue trackers, chat
 # My Project
 
 [![CI](https://github.com/DiMM2021/rails-project-63/actions/workflows/CI.yml/badge.svg)](https://github.com/DiMM2021/rails-project-63/actions/workflows/CI.yml)
-
 [![Hexlet Check](https://github.com/DiMM2021/rails-project-63/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/DiMM2021/rails-project-63/actions/workflows/hexlet-check.yml)
