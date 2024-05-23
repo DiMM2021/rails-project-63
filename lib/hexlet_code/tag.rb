@@ -5,19 +5,16 @@ module HexletCode
 
   # Class for building HTML tags
   class Tag
-    SELF_CLOSED_TAGS = %w[br img input link meta]
+    SELF_CLOSED_TAGS = %w[br img input link meta].freeze
 
-    def self.build(tag_name, attributes = {}, &_block)
-      attrs = attributes.map { |key, value| "#{key}=\"#{value}\"" }
-      attrs_str = attrs.join(" ")
-      tag_opening = "<#{tag_name}#{' ' unless attrs_str.empty?}#{attrs_str}>"
+    def self.build(tag_name, attributes = {})
+      attrs_str = attributes.map { |key, value| "#{key}=\"#{value}\"" if value }.compact.join(" ")
+      tag_opening = "<#{tag_name}#{" " unless attrs_str.empty?}#{attrs_str}"
 
       if SELF_CLOSED_TAGS.include?(tag_name)
-        tag_opening.chomp('>') + "/>"
-      elsif block_given?
-        "#{tag_opening}#{yield}<\/#{tag_name}>"
+        "#{tag_opening}/>"
       else
-        "#{tag_opening}<\/#{tag_name}>"
+        "#{tag_opening}></#{tag_name}>"
       end
     end
   end
