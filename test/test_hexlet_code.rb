@@ -10,30 +10,26 @@ class TestHexletCode < Minitest::Test
   User = Struct.new(:name, :job, keyword_init: true)
 
   def test_generates_form_with_default_action_and_method
-    user = User.new(name: 'John', job: 'Developer')
+    user = User.new(name: "John", job: "Developer")
     form = HexletCode.form_for(user) { |f| }
     assert_equal '<form action="#" method="post"></form>', form
   end
 
   def test_generates_form_with_custom_action_and_default_method
-    user = User.new(name: 'John', job: 'Developer')
-    form = HexletCode.form_for(user, url: '/users') { |f| }
+    user = User.new(name: "John", job: "Developer")
+    form = HexletCode.form_for(user, url: "/users") { |f| }
     assert_equal '<form action="/users" method="post"></form>', form
   end
 
   def test_generates_form_with_custom_method_and_default_action
-    user = User.new(name: 'John', job: 'Developer')
-    form = HexletCode.form_for(user, method: 'put') { |f| }
+    user = User.new(name: "John", job: "Developer")
+    form = HexletCode.form_for(user, method: "put") { |f| }
     assert_equal '<form action="#" method="put"></form>', form
   end
 
   def test_generates_form_with_custom_action_and_method
-    user = User.new(name: 'John', job: 'Developer')
-    form = HexletCode.form_for(user, url: '/users', method: 'put') { |f| }
+    user = User.new(name: "John", job: "Developer")
+    form = HexletCode.form_for(user, url: "/users", method: "put") { |f| }
     assert_equal '<form action="/users" method="put"></form>', form
   end
-
-# def test_it_does_something_useful
-#  assert false
-# end
 end
