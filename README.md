@@ -42,3 +42,43 @@ Everyone interacting in the HexletCode project's codebases, issue trackers, chat
 
 [![CI](https://github.com/DiMM2021/rails-project-63/actions/workflows/CI.yml/badge.svg)](https://github.com/DiMM2021/rails-project-63/actions/workflows/CI.yml)
 [![Hexlet Check](https://github.com/DiMM2021/rails-project-63/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/DiMM2021/rails-project-63/actions/workflows/hexlet-check.yml)
+
+# HexletCode
+
+HexletCode - это библиотека для генерации форм на Ruby.
+
+# Установка
+
+Установите библиотеку, добавив следующую строку в Gemfile: gem 'hexlet_code'
+
+Затем выполните: bundle install
+
+# Использование
+
+Подключите библиотеку HexletCode: require "hexlet_code"
+
+Определите структуру данных, которая представляет ваш объект формы. 
+Например, определим структуру User: 
+
+User = Struct.new(:name, :email, :age, keyword_init: true)
+
+Создайте новый экземпляр User и передайте его в HexletCode.form_for вместе с блоком для определения полей формы:
+
+user = User.new(name: "John Doe", email: "john.doe@example.com", age: 30)
+
+form = HexletCode.form_for(user, url: "/users") do |f|
+  f.input :name, label: "Полное имя"
+  f.input :email, placeholder: "user@example.com"
+  f.input :age, type: :number, min: 18, max: 100
+end
+
+Это сгенерирует следующую HTML-форму: 
+
+<form action="/users" method="post">
+  <label for="user_name">Полное имя</label>
+  <input type="text" id="user_name" name="name" value="John Doe">
+
+  <input type="email" name="email" placeholder="user@example.com" value="john.doe@example.com">
+
+  <input type="number" name="age" min="18" max="100" value="30">
+</form>

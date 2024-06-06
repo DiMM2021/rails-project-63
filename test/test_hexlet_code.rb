@@ -32,4 +32,28 @@ class TestHexletCode < Minitest::Test
     form = HexletCode.form_for(user, url: "/users", method: "put") { |f| }
     assert_equal '<form action="/users" method="put"></form>', form
   end
+
+  def test_generates_form_with_inputs
+    user = User.new(name: "rob", job: "hexlet")
+    form = HexletCode.form_for(user) do |f|
+      f.input :name
+      f.input :job, as: :text
+    end
+    input_name = '<input name="name" type="text" value="rob">'
+    input_job = '<textarea name="job" cols="20" rows="40">hexlet</textarea>'
+    expected = "<form action=\"#\" method=\"post\">#{input_name}#{input_job}</form>"
+    assert_equal expected, form
+  end
+
+  def test_generates_form_with_inputs_and_attributes
+    user = User.new(name: "rob", job: "hexlet")
+    form = HexletCode.form_for(user, url: "#") do |f|
+      f.input :name, class: "user-input"
+      f.input :job
+    end
+    input_name = '<input name="name" type="text" value="rob" class="user-input">'
+    input_job = '<input name="job" type="text" value="hexlet">'
+    expected = "<form action=\"#\" method=\"post\">#{input_name}#{input_job}</form>"
+    assert_equal expected, form
+  end
 end
