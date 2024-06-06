@@ -2,11 +2,13 @@
 
 require "test_helper"
 
-class TestHexletCode < Minitest::Test
+class TestHexletCodeBasicForms < Minitest::Test
   def test_that_it_has_a_version_number
     refute_nil ::HexletCode::VERSION
   end
+end
 
+class TestHexletCodeFormGeneration1 < Minitest::Test
   User = Struct.new(:name, :job, keyword_init: true)
 
   def test_generates_form_with_default_action_and_method
@@ -32,6 +34,10 @@ class TestHexletCode < Minitest::Test
     form = HexletCode.form_for(user, url: "/users", method: "put") { |f| }
     assert_equal '<form action="/users" method="put"></form>', form
   end
+end
+
+class TestHexletCodeFormGeneration2 < Minitest::Test
+  User = Struct.new(:name, :job, keyword_init: true)
 
   def test_generates_form_with_inputs
     user = User.new(name: "rob", job: "hexlet")
@@ -39,9 +45,14 @@ class TestHexletCode < Minitest::Test
       f.input :name
       f.input :job, as: :text
     end
-    input_name = '<input name="name" type="text" value="rob">'
-    input_job = '<textarea name="job" cols="20" rows="40">hexlet</textarea>'
-    expected = "<form action=\"#\" method=\"post\">#{input_name}#{input_job}</form>"
+    expected = [
+      '<form action="#" method="post">',
+      '<label for="name">Name</label>',
+      '<input name="name" type="text" value="rob">',
+      '<label for="job">Job</label>',
+      '<textarea name="job" cols="20" rows="40">hexlet</textarea>',
+      "</form>"
+    ].join
     assert_equal expected, form
   end
 
@@ -51,9 +62,77 @@ class TestHexletCode < Minitest::Test
       f.input :name, class: "user-input"
       f.input :job
     end
-    input_name = '<input name="name" type="text" value="rob" class="user-input">'
-    input_job = '<input name="job" type="text" value="hexlet">'
-    expected = "<form action=\"#\" method=\"post\">#{input_name}#{input_job}</form>"
+    expected = [
+      '<form action="#" method="post">',
+      '<label for="name">Name</label>',
+      '<input name="name" type="text" value="rob" class="user-input">',
+      '<label for="job">Job</label>',
+      '<input name="job" type="text" value="hexlet">',
+      "</form>"
+    ].join
     assert_equal expected, form
+  end
+
+  def test_generates_form_with_text_area_and_custom_attributes
+    user = User.new(name: "rob", job: "hexlet")
+    form = HexletCode.form_for(user, url: "#") do |f|
+      f.input :job, as: :text, rows: 50, cols: 50
+    end
+    expected = [
+      '<form action="#" method="post">',
+      '<label for="job">Job</label>',
+      '<textarea name="job" cols="50" rows="50">hexlet</textarea>',
+      "</form>"
+    ].join
+    assert_equal expected, form
+  end
+
+  def test_generates_form_with_submit_button
+    user = User.new(name: "John", job: "Developer")
+    form = HexletCode.form_for(user) do |f|
+      f.input :name
+      f.input :job
+      f.submit
+    end
+    expected = [
+      '<form action="#" method="post">',
+      '<label for="name">Name</label>',
+      '<input name="name" type="text" value="John">',
+      '<label for="job">Job</label>',
+      '<input name="job" type="text" value="Developer">',
+      '<input type="submit" value="Save">',
+      "</form>"
+    ].join
+    assert_equal expected, form
+  end
+
+  def test_generates_form_with_custom_submit_button_text
+    user = User.new(name: "John", job: "Developer")
+    form = HexletCode.form_for(user) do |f|
+      f.input :name
+      f.input :job
+      f.submit "Wow"
+    end
+
+    expected_form = '<form action="#" method="post">'
+    expected_form += '<label for="name">Name</label>'
+    expected_form += '<input name="name" type="text" value="John">'
+    expected_form += '<label for="job">Job</label>'
+    expected_form += '<input name="job" type="text" value="Developer">'
+    expected_form += '<input type="submit" value="Wow">'
+    expected_form += "</form>"
+
+    assert_equal expected_form, form
+  end
+
+  def test_raises_error_for_nonexistent_field
+    user = User.new(name: "John", job: "Developer")
+    assert_raises(NoMethodError) do
+      HexletCode.form_for(user) do |f|
+        f.input :name
+        f.input :job
+        f.input :nonexistent_field
+      end
+    end
   end
 end
