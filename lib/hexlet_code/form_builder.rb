@@ -1,15 +1,21 @@
 # frozen_string_literal: true
 
+require_relative "tag"
+require_relative "inputs/base_input"
+require_relative "inputs/string_input"
+require_relative "inputs/text_input"
+
 module HexletCode
   class FormBuilder
-    attr_reader :fields
+    attr_reader :fields, :form_attributes
 
-    def initialize(entity)
+    def initialize(entity, **attributes)
       @entity = entity
       @fields = ""
+      @form_attributes = attributes
     end
 
-    def input(field_name, as: :input, **attributes)
+    def input(field_name, as: :string, **attributes)
       raise NoMethodError, "undefined method `#{field_name}` for #{@entity}" if field_name_not_found?(field_name)
 
       label = build_label(field_name)
@@ -34,23 +40,16 @@ module HexletCode
 
     def build_input_field(field_name, as, attributes)
       value = @entity.public_send(field_name)
-
-      case as
-      when :text
-        build_textarea(field_name, value, attributes)
-      else
-        build_regular_input(field_name, value, attributes)
-      end
+      input_class = input_class_for(as)
+      input = input_class.new(field_name, value, **attributes)
+      input.render
     end
 
-    def build_textarea(field_name, value, attributes)
-      attributes = { cols: 20, rows: 40 }.merge(attributes)
-      Tag.build("textarea", { name: field_name }.merge(attributes)) { value }
-    end
-
-    def build_regular_input(field_name, value, attributes)
-      attributes = { type: "text", value: value || "" }.merge(attributes)
-      Tag.build("input", { name: field_name }.merge(attributes))
+    def input_class_for(type)
+      class_name = "#{type.to_s.split("_").map(&:capitalize).join}Input"
+      Inputs.const_get(class_name)
+    rescue NameError
+      raise ArgumentError, "Unsupported input type: #{type}"
     end
   end
 end
