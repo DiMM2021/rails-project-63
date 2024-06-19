@@ -4,9 +4,17 @@ HexletCode - это библиотека для генерации HTML-форм
 
 ## Установка
 
-Чтобы установить гем HexletCode, добавьте следующую строку в ваш Gemfile: gem 'hexlet_code'
+Чтобы установить гем HexletCode, добавьте следующую строку в ваш Gemfile: 
 
-Затем выполните: bundle install
+#```ruby
+#gem 'hexlet_code'
+#```
+
+Затем выполните: 
+
+#```ruby
+#bundle install
+#```
 
 ## Использование
 
@@ -21,7 +29,7 @@ User = Struct.new(:name, :email, :age, keyword_init: true)
 user = User.new(name: "John Doe", email: "john.doe@example.com", age: 30)
 
 form = HexletCode.form_for(user, url: "/users") do |f|
-  f.input :name, label: "Полное имя"
+  f.input :name, label: "Имя"
   f.input :email, placeholder: "user@example.com"
   f.input :age, type: :number, min: 18, max: 100
 end
@@ -31,7 +39,7 @@ puts form
 Это сгенерирует следующую HTML-форму:
 
 <form action="/users" method="post">
-  <label for="user_name">Полное имя</label>
+  <label for="user_name">Имя</label>
   <input type="text" id="user_name" name="name" value="John Doe">
 
   <input type="email" name="email" placeholder="user@example.com" value="john.doe@example.com">

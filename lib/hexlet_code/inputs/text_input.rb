@@ -1,18 +1,28 @@
 # frozen_string_literal: true
 
-require_relative "base_input"
-
 module HexletCode
   module Inputs
     class TextInput < BaseInput
+      def initialize(name, value, **attributes)
+        super(name, value)
+        @attributes = attributes
+      end
+
       private
 
       def tag_name
-        "textarea"
+        'textarea'
+      end
+
+      def base_attributes
+        {
+          name: @name,
+          value: @value
+        }
       end
 
       def input_attributes
-        { name: @name, cols: 20, rows: 40 }.merge(@attributes)
+        base_attributes.merge(@attributes || {})
       end
 
       def tag_content

@@ -1,17 +1,12 @@
 # frozen_string_literal: true
 
-require_relative "tag"
-require_relative "inputs/base_input"
-require_relative "inputs/string_input"
-require_relative "inputs/text_input"
-
 module HexletCode
   class FormBuilder
     attr_reader :fields, :form_attributes
 
     def initialize(entity, **attributes)
       @entity = entity
-      @fields = ""
+      @fields = ''
       @form_attributes = attributes
     end
 
@@ -24,8 +19,8 @@ module HexletCode
       @fields += label + input_field
     end
 
-    def submit(value = "Save")
-      @fields += Tag.build("input", { type: "submit", value: value })
+    def submit(value = 'Save')
+      @fields += Tag.build('input', { type: 'submit', value: value })
     end
 
     private
@@ -35,13 +30,14 @@ module HexletCode
     end
 
     def build_label(field_name)
-      Tag.build("label", { for: field_name }) { field_name.capitalize }
+      Tag.build('label', { for: field_name }) { field_name.capitalize }
     end
 
-    def build_input_field(field_name, as, attributes)
+    def build_input_field(field_name, as, _attributes)
       value = @entity.public_send(field_name)
       input_class = input_class_for(as)
-      input = input_class.new(field_name, value, **attributes)
+
+      input = input_class.new(field_name, value || '')
       input.render
     end
 

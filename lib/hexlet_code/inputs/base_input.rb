@@ -3,10 +3,9 @@
 module HexletCode
   module Inputs
     class BaseInput
-      def initialize(name, value, **attributes)
+      def initialize(name, value)
         @name = name
         @value = value
-        @attributes = attributes
       end
 
       def render
@@ -21,8 +20,9 @@ module HexletCode
         raise NotImplementedError, "#{self.class} должен реализовать метод 'tag_name'"
       end
 
-      def input_attributes
-        { name: @name }.merge(@attributes)
+      def input_html_attributes
+        base_attributes = { name: @name, value: @value }.merge(@attributes)
+        Tag.build('input', base_attributes)
       end
 
       def tag_content
